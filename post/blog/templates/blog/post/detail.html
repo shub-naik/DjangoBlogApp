@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load crispy_forms_tags %}
+    <meta charset="UTF-8">
+    <title>Post Detail : {{post.title}}</title>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
+    <!-- Bootstrap core CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Material Design Bootstrap -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.8.11/css/mdb.min.css" rel="stylesheet">
+
+    <!-- Basic Bootstrap 4 Links -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+            integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+            crossorigin="anonymous"></script>
+    <style>
+
+  #search {
+  width: 180px;
+  box-sizing: border-box;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+  background-color: white;
+  background-image: url('searchicon.png');
+  background-position: 10px 10px;
+  background-repeat: no-repeat;
+  padding: 12px 20px 12px 40px;
+  -webkit-transition: width 0.4s ease-in-out;
+  transition: width 0.4s ease-in-out;
+}
+
+#search:focus {
+  width: 100%;
+}
+        .sticky{
+        border:2px solid black;
+        position:sticky;
+        top:0px;
+        max-height:630px;
+        overflow:auto;
+        background: linear-gradient(to bottom, #33ccff 7%, #ff99cc 34%);
+        }
+
+        .latest_post_links  a {
+            color:red;
+            font-family:arial;
+            text-transform:uppercase;
+            transition: transform 0.5s ease;
+        }
+
+        .latest_post_links  a:hover{
+            color:black;
+            transform: scale(2);
+            text-decoration:none;
+        }
+
+
+
+
+
+
+
+
+    </style>
+
+</head>
+<body>
+{% load blog_tags %}
+
+<div class="container-fluid">
+    <div style="text-align:center;margin-top:10px;">
+        <button class="btn btn-danger" onclick="goBack()">Back</button>
+    </div>
+
+    <div class="row">
+        <!--  Main Content For the Details -->
+        <div class="col col-md-9 col-lg-9 col-xs-12 col-sm-12">
+            <div class="card" style="margin-top:10px">
+                <div class="card-header h3" style="background-color:grey">
+                    <h1>{{post.title}} -By {{post.author.username}}</h1>
+                    <h4 style="color:white;border-bottom:2px dotted white">
+                        Tags: {{post.tags.all|join:", "|title}}
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">{{post.title}} - Created On {{post.created}} and Updated on
+                        {{post.updated}}</h5>
+                    <p class="card-title">
+                        {{post.body|safe}}
+                    </p>
+                    <div>
+                        <a href="{% url 'share' post.id %}"
+                           style="margin-right:30px;text-align:center;text-decoration:none;float:right"
+                           class="alert alert-info"><i class="fas fa-share"></i> Share</a>
+                        {% if post.author == request.user %}
+                        <a href="{% url 'update_post' post.id %}"
+                           style="margin-right:30px;text-align:center;text-decoration:none;float:right"
+                           class="alert alert-warning"><i class="fas fa-edit"></i> Update </a>
+                        <a href="{% url 'delete_post' post.id %}"
+                           style="margin-right:30px;text-align:center;text-decoration:none;float:right"
+                           class="alert alert-danger"><i class="fas fa-trash"></i> Delete </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="alert alert-primary" style="margin-top:10px">
+                <h3>Comments on {{post.title}}</h3>
+                <h4>
+            <span class="badge badge-danger">
+                {% with comments.count as total_comments %}
+                    {{total_comments}} comment{{ total_comments|pluralize }}
+                {% endwith%}
+            </span>
+                </h4>
+            </div>
+
+
+            <!--For Displaying the list of comments-->
+            {% for comment in comments %}
+            <div class="alert alert-warning">
+                <h3>Comment by "{{comment.username}}" on "{{comment.created}}"</h3>
+                <h5>{{comment.body|safe}}</h5>
+            </div>
+            {% empty %}
+            <div class="alert alert-danger">
+                <h3>There are No Comments Yet </h3>
+            </div>
+            {% endfor %}
+
+            <hr>
+
+            {% if messages %}
+            {% for message in messages %}
+            <div class="alert alert-success">
+                Your Message Has been Added !!!
+            </div>
+            {% endfor %}
+            {% else %}
+            <div class="alert alert-info">
+                <h3>Add Your Comments on {{post.title}}</h3>
+            </div>
+            <form action="" method="POST">
+                {% csrf_token %}
+                {{comment_form.media}}
+                {{comment_form|crispy}}
+                <input type="submit" class="btn btn-success" value="Add Comments" style="margin:10px;">
+            </form>
+            {% endif %}
+        </div>
+        <!-- Main Content Ends Here -->
+
+
+        <!-- Right SideBar for Latest, Most Commented Posts -->
+
+        <div class="col col-lg-3 col-md-3 sticky">
+
+            <input type="text" id="search" placeholder="Search Here ">
+            <ul id="search_items"></ul>
+
+            <!-- Similar Posts With This Post By Tags -->
+            <ul style="border-top:2px solid black"></ul>
+            <h3> Similar Posts </h3>
+            <ul style="border-top:2px solid black;margin-bottom:10px">
+                {% for post in similar_posts %}
+                <li class="latest_post_links"><a href="{{post.get_absolute_url}}">{{post.title}}</a></li>
+                {% endfor %}
+            </ul>
+
+
+            {% show_latest_posts 3 %}
+
+            <div style="margin-top:10px">
+                <h3>Most Commented Posts </h3>
+                {% get_most_commented as commented %}
+                <ul style="border-top:2px solid black;">
+                    {% for comment in commented %}
+                    <li class="latest_post_links"><a href="{{comment.get_absolute_url}}">{{comment.title}}</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+</div>
+</body>
+
+<!-- jquery cdn -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.js"></script>
+<script>
+    function goBack()
+    {
+        window.history.back();
+    }
+
+
+
+
+</script>
+
+<!-- Ajax Fetch Page Static Load -->
+{% load static %}
+<script src="{%static 'blog/ajax_fetch.js' %}"></script>
+
+
+</html>

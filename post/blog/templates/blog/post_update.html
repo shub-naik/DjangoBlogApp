@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load crispy_forms_tags %}
+<head>
+    <meta charset="UTF-8">
+    <title>Create Posts</title>
+</head>
+<body class="container" style="text-align:center;border:1px solid red;padding:10px;">
+{% include './post/navbar.html' %}
+<div class="alert alert-info" style="text-align:center;display:inline-block">
+    Update Post
+</div>
+<div>
+    <form method="POST" enctype="multipart/form-data" style="width:80%;margin:0px auto">
+        {% csrf_token %}
+        {{form.media}}
+        {{form|crispy}}
+        <input type="hidden" name="next" value="{{next}}">
+        <input type="submit" name="Update" class="btn btn-success" value="Update">
+    </form>
+</div>
+</body>
+</html>

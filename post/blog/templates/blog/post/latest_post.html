@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Latest Posts So Far </title>
+</head>
+<body>
+    <div>
+        <h2>Latest Posts So Far</h2>
+        <ul style="border-top:2px solid black; margin-bottom:30px;">
+            {% for post in latest_post %}
+                <li class="latest_post_links"><a href="{{post.get_absolute_url}}">{{post.title}}</a></li>
+            {% endfor %}
+        </ul>
+    </div>
+</body>
+</html>

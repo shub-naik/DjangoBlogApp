@@ -1,0 +1,18 @@
+<html>
+<head>
+    <title>Ajax Search Results Page !!!!!!!!!!!</title>
+</head>
+<body>
+<div class="container-fluid">
+    <div style="border:2s solid red">
+        {% if posts.count > 0 %}
+        {% for post in posts %}
+        <li><a href="{{post.get_absolute_url}}">{{post.title}}</a></li>
+        {% endfor %}
+        {% else %}
+        <li>None To Show</li>
+        {% endif %}
+    </div>
+</div>
+</body>
+</html>

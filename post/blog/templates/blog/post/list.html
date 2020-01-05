@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Post List</title>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
+    <!-- Bootstrap core CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Material Design Bootstrap -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.8.11/css/mdb.min.css" rel="stylesheet">
+
+    <!-- Background Patterns -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/css-doodle/0.6.1/css-doodle.min.js"></script>
+    <style>
+
+
+    .background-checkx{
+        background-color:#ffffff;
+        background-image:linear-gradient(45deg,#9cc4dd 33%,transparent 33%, transparent 66%, #9cc4dd 66%),
+                         linear-gradient(135deg,#9cc4dd 33%,transparent 33%, transparent 66%, #9cc4dd 66%);
+                         background-size:40px 40px;
+    }
+
+
+#search{
+  width: 180px;
+  box-sizing: border-box;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+  background-color: white;
+  background-image: url('searchicon.png');
+  background-position: 10px 10px;
+  background-repeat: no-repeat;
+  padding: 12px 20px 12px 40px;
+  -webkit-transition: width 0.4s ease-in-out;
+  transition: width 0.4s ease-in-out;
+}
+
+.hover_items button{
+  position: absolute;
+  left: -100px;
+  transition: 0.3s;
+  padding: 15px;
+  width: 150px;
+  text-decoration: none;
+  font-size: 20px;
+  color: white;
+  border-radius: 0 5px 5px 0;
+}
+
+.hover_items button:hover{
+    left:0px;
+}
+
+.like{
+    top:40px;
+    background-color: #4CAF50;
+}
+.dislike{
+    top:120px;
+    background-color: #f44336;
+}
+
+input[type=text]:focus {
+  width: 100%;
+}
+
+        .sticky{
+        border:2px solid black;
+        position:sticky;
+        top:0px;
+        max-height:500px;
+        overflow:auto;
+        background: linear-gradient(to bottom, #33ccff 7%, #ff99cc 34%);
+        }
+
+        .latest_post_links  a {
+            color:red;
+            font-family:arial;
+            text-transform:uppercase;
+            transition: transform 0.5s ease;
+        }
+
+        .latest_post_links  a:hover{
+            color:black;
+            transform: scale(2);
+            text-decoration:none;
+        }
+
+
+
+
+
+    </style>
+
+</head>
+<body>
+<div class="container-fluid">
+
+    {% include './navbar.html' %}
+
+    <div class="row" style="margin:10px">
+        <!-- Main Content -->
+        <div class="col col-md-9 col-lg-9 col-xs-12 col-sm-12 background-checkx">
+            {% for post in posts %}
+            <div class="card" style="margin-top:10px">
+                <div class="card-header h3" style="background-color:grey">
+                    <div class="hover_items">
+                        <button class="like" id={{post.title}}+{{post.id}} onclick="like(this.id)">Like <i
+                                class="fas fa-thumbs-up"></i></button>
+                        <button class="dislike" id={{post.id}}+{{post.title}} onclick="dislike(this.id)">DisLike <i
+                                class="fas fa-thumbs-down"></i></button>
+                    </div>
+                    <a href="{{post.get_absolute_url}}">{{post.title}} -By {{post.author.username}}</a>
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">{{post.title}}- Created On {{post.created}} and Updated on
+                        {{post.updated}}</h5>
+                    <p class="card-title">
+                        {{ post.body|safe|truncatewords_html:3}}
+                    </p>
+                    <a href="{{post.get_absolute_url}}">
+                        <div class="alert alert-success" style="display:inline-block;float:right">Read More</div>
+                    </a>
+                    <p>
+                        Tags:
+                        {% for tag in post.tags.all %}
+                        <a href="{% url 'post_list' tag.slug %}">{{tag.name}}</a>
+                        {% if not forloop.last %} ,{% endif %}
+                        {% endfor %}
+                    </p>
+                </div>
+            </div>
+            {% endfor %}
+            {% include "blog/post/pagination.html" with page=posts %}
+        </div>
+        <!-- Main Div Ends Here -->
+
+        <!-- Right Sidebar -->
+        {% load blog_tags %}
+        <div class="col-lg-3 col-md-3 sticky">
+
+            {% csrf_token %}
+            <input type="text" id="search" placeholder="Search Here " autofocus>
+            <ul id="search_items"></ul>
+            {% show_latest_posts 3 %}
+
+            <div style="margin-top:10px">
+                <h3>Most Commented Posts </h3>
+                {% get_most_commented as commented %}
+                <ul style="border-top:2px solid black;">
+                    {% for comment in commented %}
+                    <li class="latest_post_links"><a href="{{comment.get_absolute_url}}">{{comment.title}}</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+        <!-- right sidebar ends here -->
+    </div>
+</div>
+</body>
+
+
+<!-- jquery cdn -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/8.11.8/sweetalert2.all.js"
+        integrity="sha256-apFUVcutYBHTJh5O835gpzGcVk3v6iUxg38lKBpQMDA=" crossorigin="anonymous"></script>
+
+
+<!-- Ajax Fetch Page Static Load -->
+{% load static %}
+<script src="{%static 'blog/ajax_fetch.js' %}"></script>
+<script src="{%static 'blog/likedislike.js' %}"></script>
+
+</html>

@@ -175,29 +175,26 @@ class PostCreateView(LoginRequiredMixin, CreateView):
     model = Post
     fields = ['title', 'body', 'status', 'tags', 'image_upload']
 
-    # def get_success_url(self, **kwargs):
-    #     return self.object.get_absolute_url()
-
     def form_valid(self, form):
         form.instance.author = self.request.user
         return super().form_valid(form)
-    #     # return super(PostCreateView, self).form_valid(form)
+        # return super(PostCreateView, self).form_valid(form)
 
 
-# def AfterPostPosting(sender, instance, created, **kwargs):
-#     if created:
-#         InstanceClass = instance.__class__
-#         instance_slug = slugify(instance.title)
-#         same_slug_list_exists = InstanceClass.objects.filter(slug=instance_slug).exclude(id=instance.id)
-#         if same_slug_list_exists:
-#             instance_slug = slugify(instance.title) + "-" + str(instance.id)
-#         else:
-#             instance_slug = slugify(instance.title)
-#         instance.slug = instance_slug
-#         instance.save()
-# 
-# 
-# post_save.connect(AfterPostPosting, sender=Post)
+def AfterPostPosting(sender, instance, created, **kwargs):
+    if created:
+        InstanceClass = instance.__class__
+        instance_slug = slugify(instance.title)
+        same_slug_list_exists = InstanceClass.objects.filter(slug=instance_slug).exclude(id=instance.id)
+        if same_slug_list_exists:
+            instance_slug = slugify(instance.title) + "-" + str(instance.id)
+        else:
+            instance_slug = slugify(instance.title)
+        instance.slug = instance_slug
+        instance.save()
+
+
+post_save.connect(AfterPostPosting, sender=Post)
 
 
 class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
@@ -217,16 +214,18 @@ class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
         return False
 
 
-# post_save signal after the update post request is done.
-def AfterPostUpdate(sender, instance, created, **kwargs):
-    queryset = Post.objects.filter(slug=instance.slug).update(slug=instance.title)
-    HttpResponseRedirect(reverse_lazy("post_detail", args=[instance.publish.strftime('%Y'),
-                                                           instance.publish.strftime('%m'),
-                                                           instance.publish.strftime('%d'),
-                                                           slugify(instance.title)]))
-
-
-post_save.connect(AfterPostUpdate, sender=Post)
+#
+#
+# # post_save signal after the update post request is done.
+# def AfterPostUpdate(sender, instance, created, **kwargs):
+#     queryset = Post.objects.filter(slug=instance.slug).update(slug=instance.title)
+#     return HttpResponseRedirect(reverse_lazy("post_detail", args=[instance.publish.strftime('%Y'),
+#                                                                   instance.publish.strftime('%m'),
+#                                                                   instance.publish.strftime('%d'),
+#                                                                   slugify(instance.title)]))
+#
+#
+# post_save.connect(AfterPostUpdate, sender=Post)
 
 
 class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):

@@ -16,7 +16,7 @@ class Post(models.Model):
         ('published', "Published")
     ]
     title = models.CharField(max_length=300)
-    slug = models.SlugField(unique=True, null=False)
+    slug = models.SlugField(unique=True, null=True)
     author = models.ForeignKey(User, related_name="blog_posts", on_delete=models.CASCADE)
     body = RichTextField()
     publish = models.DateTimeField(default=timezone.now)
@@ -37,11 +37,6 @@ class Post(models.Model):
                              self.publish.strftime('%m'),
                              self.publish.strftime('%d'),
                              self.slug])
-
-    def save(self, *args, **kwargs):
-        if self.slug:
-            self.slug = slugify(self.title)
-        super().save(*args, **kwargs)
 
     # For Tagging Features
     tags = TaggableManager()

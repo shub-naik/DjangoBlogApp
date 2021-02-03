@@ -2,10 +2,9 @@ from ckeditor.fields import RichTextField
 from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
-from django.forms import TextInput
 from django.urls import reverse
 from django.utils import timezone
-from django.utils.text import slugify
+from phone_field import PhoneField
 
 from taggit.managers import TaggableManager
 
@@ -16,10 +15,10 @@ class Post(models.Model):
         ('published', "Published")
     ]
     title = models.CharField(max_length=300)
-    slug = models.SlugField(unique=True, null=False)
+    slug = models.SlugField(unique=True, null=True)
     author = models.ForeignKey(User, related_name="blog_posts", on_delete=models.CASCADE)
     body = RichTextField()
-    publish = models.DateTimeField(default=timezone.now)
+    publish = models.DateField(default=timezone.now)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     status = models.CharField(max_length=10, choices=STATUS_CHOICE, default="draft")
@@ -37,11 +36,6 @@ class Post(models.Model):
                              self.publish.strftime('%m'),
                              self.publish.strftime('%d'),
                              self.slug])
-
-    def save(self, *args, **kwargs):
-        if self.slug:
-            self.slug = slugify(self.title)
-        super().save(*args, **kwargs)
 
     # For Tagging Features
     tags = TaggableManager()

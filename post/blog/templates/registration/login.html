@@ -22,6 +22,9 @@
     Log In
 </div>
 <div>
+    {% if request.user.is_authenticated == True and request.user.is_staff == False %}
+    {%url 'item_create' %}
+    {% endif %}
     <form method="POST" style="width:80%;margin:0px auto">
         {% csrf_token %}
         {{form|crispy}}

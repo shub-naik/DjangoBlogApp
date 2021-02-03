@@ -1,8 +1,4 @@
-from sys import path
-
 from django.conf.urls import url
-from django.conf.urls.static import static
-from django.conf import settings
 from . import views
 from django.contrib.auth import views as auth_views
 
@@ -23,7 +19,7 @@ urlpatterns = [
     url(r'^register/$', views.register, name='register'),
 
     # like and dislike urls
-    url(r'^like_dislike/$',views.like_dislike,name='like_dislike'),
+    url(r'^like_dislike/$', views.like_dislike, name='like_dislike'),
 
     # create posts url
     url(r'^create_post/', views.PostCreateView.as_view(), name="create_post"),
@@ -32,5 +28,6 @@ urlpatterns = [
     url(r'^update_post/(?P<pk>[0-9]+)/$', views.PostUpdateView.as_view(), name='update_post'),
 
     # delete posts url
-    url(r'^delete_post/(?P<pk>[0-9]+)/post/$', views.PostDeleteView.as_view(template_name="blog/post/post_confirm_delete.html"), name='delete_post'),
+    url(r'^delete_post/(?P<pk>[0-9]+)/post/$',
+        views.PostDeleteView.as_view(template_name="blog/post/post_confirm_delete.html"), name='delete_post'),
 ]

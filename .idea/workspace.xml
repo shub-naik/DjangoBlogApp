@@ -2,8 +2,21 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="cbc527c7-93bd-44e5-9057-0d93840b85ed" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/post/media/post_pics/Godrej_jlCeadd.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/post/media/post_pics/default_f8NtjXC.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/post/media/profile_pics/bill_gates_aP51Fj8.jpg" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/post/blog/api/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/post/blog/api/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/post/blog/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/post/blog/forms.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/post/blog/migrations/0001_initial.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/post/blog/migrations/0002_auto_20191229_1202.py" beforeDir="false" afterPath="$PROJECT_DIR$/post/blog/migrations/0002_auto_20200201_1812.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/post/blog/migrations/0003_auto_20200107_1947.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/post/blog/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/post/blog/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/post/blog/templates/registration/login.html" beforeDir="false" afterPath="$PROJECT_DIR$/post/blog/templates/registration/login.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/post/blog/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/post/blog/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/post/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/post/db.sqlite3" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/post/post/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/post/post/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/post/post/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/post/post/urls.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -29,7 +42,7 @@
   <component name="PropertiesComponent">
     <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="DefaultHtmlFileTemplate" value="HTML File" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/post/blog/templates" />
+    <property name="last_opened_file_path" value="$USER_HOME$/Documents/GitHub/IMQR" />
     <property name="settings.editor.selected.configurable" value="project.propVCSSupport.Mappings" />
   </component>
   <component name="RecentsManager">

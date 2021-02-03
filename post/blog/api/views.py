@@ -1,11 +1,7 @@
-from django.http import JsonResponse
 from django.utils.text import slugify
-from rest_framework import status
-from rest_framework.decorators import api_view
 from rest_framework.generics import ListAPIView, RetrieveAPIView, UpdateAPIView, RetrieveDestroyAPIView, CreateAPIView, \
     RetrieveUpdateAPIView
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.response import Response
 
 from .serializers import PostBlogSerializer, PostUpdateSerializer, PostDeleteSerializer, PostCreateSerializer
 from ..models import Post
@@ -16,7 +12,6 @@ class PostCreateApiView(CreateAPIView):
 
     def perform_create(self, serializer):
         slug_field = slugify(self.request.data['title'])
-        print(slug_field)
         serializer.save(author=self.request.user, slug=slug_field)
 
 
